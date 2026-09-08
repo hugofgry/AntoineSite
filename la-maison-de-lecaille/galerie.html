@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galerie — La Maison de l'Écaille</title>
+<meta name="description" content="Galerie photos de La Maison de l'Écaille : huîtres, plateaux, la loge et l'équipe, au marché des Carmes à Bordeaux.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Aller au contenu</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Navigation principale">
+    <a class="logo" href="index.html">
+      <strong>La Maison de l'Écaille</strong>
+      <span>Marché des Carmes · Bordeaux</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="carte.html">La carte</a></li>
+      <li><a href="histoire.html">Notre histoire</a></li>
+      <li><a href="galerie.html" aria-current="page">Galerie</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <a class="btn btn-outline nav-cta" href="contact.html">Nous écrire</a>
+    <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+    </button>
+  </nav>
+  <ul class="mobile-menu">
+    <li><a href="index.html">Accueil</a></li>
+    <li><a href="carte.html">La carte</a></li>
+    <li><a href="histoire.html">Notre histoire</a></li>
+    <li><a href="galerie.html">Galerie</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</header>
+
+<main id="main">
+
+  <section class="page-header">
+    <div class="container reveal">
+      <span class="eyebrow">Galerie</span>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);">La Maison en images</h1>
+      <p class="lede" style="margin-top:14px;">Huîtres, plateaux, la loge et l'équipe — un aperçu de l'ambiance au marché des Carmes.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+
+      <!-- =====================================================
+           COMMENT MODIFIER LA GALERIE
+           - Chaque photo est un bloc <div class="ph">...</div>
+           - Pour ajouter une photo : copiez un bloc entier et collez-le
+             à la suite, puis changez le texte du "ph-label".
+           - Pour retirer une photo : supprimez son bloc en entier.
+         ===================================================== -->
+      <div class="gallery-grid reveal">
+        <div class="ph"><span class="ph-label">Huîtres sur claie</span></div>
+        <div class="ph"><span class="ph-label">Plateau Le Carmes</span></div>
+        <div class="ph"><span class="ph-label">La loge, comptoir</span></div>
+        <div class="ph"><span class="ph-label">L'équipe en service</span></div>
+        <div class="ph"><span class="ph-label">Ouverture des huîtres</span></div>
+        <div class="ph"><span class="ph-label">Verre de blanc et huîtres</span></div>
+        <div class="ph"><span class="ph-label">Le marché des Carmes</span></div>
+        <div class="ph"><span class="ph-label">Terrasse, fin de journée</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sand">
+    <div class="container reveal" style="text-align:center;">
+      <span class="eyebrow">À suivre au quotidien</span>
+      <h2>Plus de photos sur Instagram</h2>
+      <p class="lede" style="margin:0 auto 24px;">Arrivages, plateaux du jour et coulisses de la Maison.</p>
+      <a class="btn btn-primary" href="https://www.instagram.com/lamaisondelecaille/" target="_blank" rel="noopener" data-track="clic_instagram">Voir l'Instagram</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <span class="footer-logo">La Maison de l'Écaille</span>
+        <p>Bar à huîtres et fruits de mer, marché des Carmes, Bordeaux.</p>
+        <a class="social-link" href="https://www.instagram.com/lamaisondelecaille/" target="_blank" rel="noopener" data-track="clic_instagram">Suivre sur Instagram</a>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="carte.html">La carte</a></li>
+          <li><a href="histoire.html">Notre histoire</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Nous trouver</h4>
+        <ul>
+          <li>Marché des Carmes, Bordeaux</li>
+          <li><a href="tel:+33500000000" data-track="clic_telephone">05 00 00 00 00</a></li>
+          <li>Mar–Sam, 11h30–15h &amp; 18h30–22h30</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> La Maison de l'Écaille</span>
+      <span>Marché des Carmes, Bordeaux</span>
+    </div>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+<script src="js/main.js"></script>
+</body>
+</html>
