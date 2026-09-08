@@ -32,7 +32,10 @@ Ouvrez `carte.html`. Chaque plat est un bloc :
 Ils apparaissent à trois endroits : `index.html` (section infos pratiques et pied de page), `contact.html` et le pied de page de chaque page. Cherchez le texte des horaires (ex. « Mardi – Samedi ») et remplacez-le partout où il apparaît.
 
 ### Les photos
-Chaque photo est actuellement un rectangle bleu/vert temporaire (« Photo à venir »), qui indique clairement où placer vos vraies photos :
+5 de vos photos sont déjà intégrées dans le dossier `images/` et utilisées sur le site (hero de l'accueil, tuiles "carte", carrousel ambiance, galerie) :
+`huitres-plateau-1.jpg`, `comptoir-large.jpg`, `huitres-vue-dessus-1.jpg`, `huitres-vue-dessus-2.jpg`, `huitres-crevettes.jpg`.
+
+Il reste des rectangles bleu/vert temporaires (« Photo à venir ») aux endroits où il manque encore une photo précise : la loge/comptoir, l'équipe, la terrasse. Ce sont ces blocs-là qu'il faut remplacer en priorité, dans `index.html` (section « Notre concept »), `histoire.html` (loge + équipe) et `galerie.html`. Le principe est le même que ci-dessous :
 ```html
 <div class="ph" style="--ar:4/3;"><span class="ph-label">Huîtres</span></div>
 ```
