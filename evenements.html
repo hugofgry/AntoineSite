@@ -2,10 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Événements &amp; prestations — La Maison de l'Écaille</title>
 <meta name="description" content="La Maison de l'Écaille intervient pour vos réceptions et événements privés ou professionnels à Toulouse : plateaux, écailler, service sur place.">
 <link rel="stylesheet" href="css/style.css">
+<meta property="og:image" content="images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="images/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="images/favicon-192.png" sizes="192x192">
@@ -51,17 +53,20 @@
 <main id="main">
 
   <section class="hero" style="min-height:64vh;">
-    <div class="hero-media"><img src="images/evenement-marche-3.jpg" alt="Stand de fruits de mer préparé pour un événement en extérieur"></div>
+    <div class="hero-media"><img src="images/comptoir-large.jpg" alt="Grand plateau de fruits de mer préparé pour un événement"></div>
     <div class="hero-inner hero-reveal">
       <span class="hand-badge" style="color:var(--sand);">Vos réceptions, version fruits de mer</span>
       <h1 style="font-size:clamp(2.2rem,5vw,3.6rem);">Événements &amp; prestations</h1>
-      <p class="lede">Anniversaires, réceptions privées, événements d'entreprise, marchés et pop-up : nous nous déplaçons avec plateaux, écailler et service sur place.</p>
+      <p class="lede"><strong>Les Copains de l'Écaille</strong>, le service événementiel de La Maison de l'Écaille : anniversaires, réceptions privées, événements d'entreprise, marchés et pop-up.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="contact.html#contact-form">Demander un devis</a>
-        <a class="btn btn-ghost" href="tel:+33561000000" data-track="clic_telephone">Nous appeler</a>
+        <a class="btn btn-primary" href="#event-form">Demander un devis</a>
       </div>
     </div>
   </section>
+
+  <div class="admin-warning" style="max-width:var(--container);margin:24px auto 0;background:#fbe9c9;color:#6b4b12;border-radius:10px;padding:14px 22px;font-size:.88rem;">
+    Page en cours de finalisation — logo, Instagram et coordonnées dédiés à « Les Copains de l'Écaille » à venir.
+  </div>
 
   <section>
     <div class="container">
@@ -96,20 +101,65 @@
         <span class="eyebrow">En images</span>
         <h2>Nos dernières prestations</h2>
       </div>
-      <div class="grid-3 reveal">
+      <div class="grid-3 reveal" style="grid-template-columns:repeat(2,1fr);max-width:760px;margin:0 auto;">
         <div class="ph" style="--ar:3/4;overflow:hidden;"><img src="images/evenement-marche-1.jpg" alt="Préparation des plateaux lors d'une soirée événementielle"></div>
         <div class="ph" style="--ar:3/4;overflow:hidden;"><img src="images/evenement-marche-2.jpg" alt="Notre équipe prête à servir lors d'un événement"></div>
-        <div class="ph" style="--ar:3/4;overflow:hidden;"><img src="images/evenement-marche-3.jpg" alt="Stand de fruits de mer en extérieur au bord de l'eau"></div>
       </div>
     </div>
   </section>
 
-  <section>
-    <div class="container reveal" style="text-align:center;max-width:720px;margin:0 auto;">
-      <span class="eyebrow">Sur devis</span>
-      <h2>Un projet d'événement&nbsp;?</h2>
-      <p class="lede" style="margin:0 auto 24px;">Parlez-nous de votre date, du nombre d'invités et de vos envies : nous vous proposons une formule adaptée.</p>
-      <a class="btn btn-primary" href="contact.html#contact-form">Demander un devis</a>
+  <!-- ============ FORMULAIRE DE DEMANDE D'ÉVÉNEMENT ============ -->
+  <section id="event-form">
+    <div class="container reveal">
+      <div class="center-head">
+        <span class="eyebrow">Sur devis</span>
+        <h2>Un projet d'événement&nbsp;?</h2>
+        <p class="lede">Parlez-nous de votre date, du nombre d'invités et de vos envies : nous vous proposons une formule adaptée.</p>
+      </div>
+
+      <form id="event-request-form" class="form-grid" action="https://formspree.io/f/mrpgovol" method="POST" style="margin:0 auto;">
+        <input type="hidden" name="_subject" value="Demande événement — Les Copains de l'Écaille">
+        <div class="field">
+          <label for="e-nom">Nom et prénom</label>
+          <input type="text" id="e-nom" name="nom" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="e-contact">Téléphone ou email</label>
+          <input type="text" id="e-contact" name="contact" required>
+        </div>
+        <div class="hours-grid" style="display:grid;gap:20px;grid-template-columns:1fr 1fr;">
+          <div class="field">
+            <label for="e-date">Date de l'événement</label>
+            <input type="date" id="e-date" name="date">
+          </div>
+          <div class="field">
+            <label for="e-invites">Nombre d'invités</label>
+            <input type="number" id="e-invites" name="invites" min="1">
+          </div>
+        </div>
+        <div class="field">
+          <label for="e-lieu">Lieu de l'événement</label>
+          <input type="text" id="e-lieu" name="lieu" placeholder="Ville, salle, domicile...">
+        </div>
+        <div class="field">
+          <label for="e-prestation">Prestation souhaitée</label>
+          <select id="e-prestation" name="prestation">
+            <option>Plateaux pour réception</option>
+            <option>Écailler sur place</option>
+            <option>Marché / pop-up</option>
+            <option>Autre (précisez dans le message)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="e-message">Votre projet en quelques mots</label>
+          <textarea id="e-message" name="message" rows="4"></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Envoyer ma demande</button>
+          <p class="form-note" style="margin-top:10px;">Nous répondons en général sous 48h.</p>
+        </div>
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </section>
 
@@ -145,15 +195,19 @@
         <h4>Nous trouver</h4>
         <ul>
           <li>Marché des Carmes, Toulouse</li>
-          <li><a href="tel:+33561000000" data-track="clic_telephone">05 61 00 00 00</a></li>
-          <li>Mar–Sam, 11h30–15h &amp; 18h30–22h30</li>
+          <li>Ouverture prochaine</li>
         </ul>
       </div>
+    </div>
+    <div class="footer-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="confidentialite.html">Confidentialité</a>
     </div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> La Maison de l'Écaille</span>
       <span>Marché des Carmes, Toulouse</span>
     </div>
+    <p class="footer-alcohol">L'abus d'alcool est dangereux pour la santé. À consommer avec modération.</p>
   </div>
 </footer>
 

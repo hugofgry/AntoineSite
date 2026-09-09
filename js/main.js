@@ -109,24 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ---------- Formulaire de contact ---------- */
-  var form = document.querySelector('#contact-form');
-  if (form) {
+  /* ---------- Formulaires (contact, commande, événements...) ---------- */
+  document.querySelectorAll('form.form-grid').forEach(function (form) {
     var status = form.querySelector('.form-status');
+    if (!status) return; // pas un formulaire à envoyer en AJAX
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var formData = new FormData(form);
       var endpoint = form.getAttribute('action');
       var showStatus = function (type, message) {
-        if (!status) return;
         status.textContent = message;
         status.className = 'form-status is-visible ' + type;
       };
 
-      // Tant que l'action du formulaire n'a pas été configurée (voir README),
-      // on affiche un message clair plutôt que d'échouer silencieusement.
       if (!endpoint || endpoint.indexOf('VOTRE_ID') !== -1) {
-        showStatus('err', 'Le formulaire n\'est pas encore connecté. Voir README.md pour l\'activer (Formspree).');
+        showStatus('err', 'Ce formulaire n\'est pas encore connecté. Voir README.md pour l\'activer (Formspree).');
         return;
       }
 
@@ -140,11 +137,11 @@ document.addEventListener('DOMContentLoaded', function () {
           showStatus('ok', 'Merci, votre message a bien été envoyé. Nous vous répondons rapidement.');
           trackEvent('envoi_formulaire');
         } else {
-          showStatus('err', 'Une erreur est survenue. Vous pouvez aussi nous appeler ou nous écrire directement.');
+          showStatus('err', 'Une erreur est survenue. Vous pouvez aussi nous écrire sur Instagram.');
         }
       }).catch(function () {
-        showStatus('err', 'Une erreur est survenue. Vous pouvez aussi nous appeler ou nous écrire directement.');
+        showStatus('err', 'Une erreur est survenue. Vous pouvez aussi nous écrire sur Instagram.');
       });
     });
-  }
+  });
 });

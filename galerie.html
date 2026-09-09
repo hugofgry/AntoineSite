@@ -2,10 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Galerie — La Maison de l'Écaille</title>
 <meta name="description" content="Galerie photos de La Maison de l'Écaille : huîtres, plateaux et événements, marché des Carmes à Toulouse.">
 <link rel="stylesheet" href="css/style.css">
+<meta property="og:image" content="images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="images/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="images/favicon-192.png" sizes="192x192">
@@ -75,9 +77,6 @@
         <div class="ph" style="overflow:hidden;"><img src="images/huitres-vue-dessus-1.jpg" alt="Vue de dessus : huîtres, bulots et crevettes"></div>
         <div class="ph" style="overflow:hidden;"><img src="images/huitres-vue-dessus-2.jpg" alt="Huîtres et fruits de mer sur glace"></div>
         <div class="ph" style="overflow:hidden;"><img src="images/huitres-crevettes.jpg" alt="Douzaine d'huîtres et crevettes"></div>
-        <div class="ph" style="overflow:hidden;"><img src="images/evenement-marche-3.jpg" alt="Stand de fruits de mer en extérieur"></div>
-        <div class="ph"><span class="ph-label">Photo à venir — le comptoir du marché des Carmes</span></div>
-        <div class="ph"><span class="ph-label">Photo à venir — terrasse</span></div>
       </div>
     </div>
   </section>
@@ -123,21 +122,25 @@
         <h4>Nous trouver</h4>
         <ul>
           <li>Marché des Carmes, Toulouse</li>
-          <li><a href="tel:+33561000000" data-track="clic_telephone">05 61 00 00 00</a></li>
-          <li>Mar–Sam, 11h30–15h &amp; 18h30–22h30</li>
+          <li>Ouverture prochaine</li>
         </ul>
       </div>
+    </div>
+    <div class="footer-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="confidentialite.html">Confidentialité</a>
     </div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> La Maison de l'Écaille</span>
       <span>Marché des Carmes, Toulouse</span>
     </div>
+    <p class="footer-alcohol">L'abus d'alcool est dangereux pour la santé. À consommer avec modération.</p>
   </div>
 </footer>
 
 <div class="order-bar">
   <a class="btn btn-primary" href="emporter.html">Commander un plateau</a>
-  <a class="btn btn-ghost" style="border-color:rgba(251,249,244,0.6);" href="tel:+33561000000" data-track="clic_telephone">Appeler</a>
+  <a class="btn btn-ghost" style="border-color:rgba(251,249,244,0.6);" href="contact.html#contact-form">Nous écrire</a>
 </div>
 
 <script>document.getElementById('year').textContent = new Date().getFullYear();</script>

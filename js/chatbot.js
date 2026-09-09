@@ -1,8 +1,10 @@
 /* =========================================================
-   LA MAISON DE L'ÉCAILLE — chatbot.js
+   LA MAISON DE L'ÉCAILLE — chatbot.js (v2)
    Petit widget de FAQ en forme d'huître ("Coquillette").
    - Aucune dépendance, aucun appel réseau, aucune IA :
      uniquement des réponses pré-écrites (mots-clés).
+   - Champ de saisie libre : cherche un mot-clé dans la question,
+     répond avec l'entrée correspondante, sinon message de repli.
    - L'icône est un dessin SVG original (pas de photo,
      pas d'image tierce) : réutilisable sans souci de droits.
    - Un seul fichier à inclure sur chaque page :
@@ -33,18 +35,19 @@
   /* ---------- Base de connaissances (à modifier ici si besoin) ---------- */
   var FAQ = [
     {
-      id: 'horaires',
-      chip: 'Horaires',
-      keywords: ['horaire', 'heure', 'ouvert', 'ouverture', 'ferme', 'fermeture'],
-      answer: 'Nous sommes ouverts du <strong>mardi au samedi</strong>, de 11h30 à 15h et de 18h30 à 22h30. Fermé le dimanche et le lundi.',
-      linkText: 'Horaires & adresse',
-      linkHref: 'contact.html'
+      id: 'ouverture',
+      chip: 'Ouverture',
+      keywords: ['horaire', 'heure', 'ouvert', 'ouverture', 'ferme', 'fermeture', 'quand'],
+      answer: 'Nous ouvrons prochainement au marché des Carmes, à Toulouse ! Suivez notre Instagram pour connaître la date d\'ouverture et les horaires dès qu\'ils seront fixés.',
+      linkText: 'Voir l\'Instagram',
+      linkHref: 'https://www.instagram.com/maisondelecaille/',
+      linkTrack: 'clic_instagram'
     },
     {
       id: 'adresse',
       chip: 'Adresse',
       keywords: ['adresse', 'ou', 'localis', 'trouve', 'itineraire', 'parking', 'venir'],
-      answer: 'Nous sommes au <strong>marché des Carmes</strong>, Place des Carmes, 31000 Toulouse.',
+      answer: 'Nous serons au <strong>marché des Carmes</strong>, Place des Carmes, 31000 Toulouse.',
       linkText: 'Voir l\'itinéraire',
       linkHref: 'https://www.google.com/maps?q=March%C3%A9+des+Carmes,+Toulouse',
       linkTrack: 'clic_itineraire'
@@ -54,7 +57,7 @@
       chip: 'La carte',
       keywords: ['carte', 'menu', 'prix', 'tarif', 'huitre', 'moule', 'entree', 'manger'],
       answer: 'Notre carte propose des huîtres du bassin d\'Arcachon, des entrées froides, des moules et plats chauds, ainsi que boissons et vins.',
-      linkText: 'Voir la carte complète',
+      linkText: 'Voir la carte',
       linkHref: 'carte.html'
     },
     {
@@ -69,15 +72,15 @@
       id: 'emporter',
       chip: 'À emporter',
       keywords: ['emporter', 'commande', 'commander', 'retirer', 'take away'],
-      answer: 'Vous pouvez commander vos plateaux et produits à emporter, à retirer directement au marché des Carmes.',
-      linkText: 'Commander un plateau',
+      answer: 'Vous pourrez bientôt commander vos plateaux à emporter via notre formulaire, pour un retrait au marché des Carmes.',
+      linkText: 'Voir la page à emporter',
       linkHref: 'emporter.html'
     },
     {
       id: 'evenements',
       chip: 'Événements',
-      keywords: ['evenement', 'prestation', 'reception', 'anniversaire', 'entreprise', 'traiteur'],
-      answer: 'Nous intervenons aussi pour vos réceptions et événements privés ou professionnels, avec plateaux et service sur place.',
+      keywords: ['evenement', 'prestation', 'reception', 'anniversaire', 'entreprise', 'traiteur', 'copains'],
+      answer: 'Les Copains de l\'Écaille, le service événementiel de La Maison de l\'Écaille, interviennent pour vos réceptions privées ou professionnelles.',
       linkText: 'Voir nos prestations',
       linkHref: 'evenements.html'
     },
@@ -85,7 +88,7 @@
       id: 'contact',
       chip: 'Nous contacter',
       keywords: ['contact', 'telephone', 'appel', 'mail', 'email', 'ecrire', 'joindre'],
-      answer: 'Vous pouvez nous appeler au 05 61 00 00 00, ou passer par notre formulaire de contact.',
+      answer: 'Le plus simple pour l\'instant : notre formulaire de contact, ou notre Instagram.',
       linkText: 'Ouvrir le formulaire',
       linkHref: 'contact.html#contact-form'
     },
@@ -93,14 +96,14 @@
       id: 'instagram',
       chip: 'Instagram',
       keywords: ['instagram', 'photo', 'reseau', 'social'],
-      answer: 'Retrouvez nos arrivages et plateaux du jour sur Instagram.',
+      answer: 'Retrouvez nos arrivages et l\'avancement de l\'ouverture sur Instagram.',
       linkText: 'Voir l\'Instagram',
       linkHref: 'https://www.instagram.com/maisondelecaille/',
       linkTrack: 'clic_instagram'
     }
   ];
 
-  var FALLBACK = 'Je n\'ai pas de réponse toute prête pour ça. Le plus sûr est de nous appeler au 05 61 00 00 00, ou d\'utiliser le formulaire de contact.';
+  var FALLBACK = 'Je n\'ai pas de réponse toute prête pour ça. Le plus sûr est d\'utiliser le formulaire de contact, ou de nous écrire sur Instagram.';
 
   function normalize(str) {
     return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -118,11 +121,10 @@
 
   /* ---------- Styles ---------- */
   var CSS = ''
-    + '#lme-chat-launcher{position:fixed;right:20px;bottom:20px;width:60px;height:60px;border-radius:50%;background:#FBF9F4;border:2px solid #163B44;box-shadow:0 8px 24px rgba(22,59,68,0.25);cursor:pointer;padding:8px;z-index:998;transition:transform .25s cubic-bezier(.22,.61,.36,1);}'
+    + '#lme-chat-launcher{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:50%;background:#FBF9F4;border:2px solid #163B44;box-shadow:0 8px 24px rgba(22,59,68,0.25);cursor:pointer;padding:8px;z-index:998;transition:transform .25s cubic-bezier(.22,.61,.36,1);}'
     + '#lme-chat-launcher:hover{transform:scale(1.08);}'
     + '#lme-chat-launcher svg{width:100%;height:100%;display:block;}'
-    + '#lme-chat-launcher .lme-badge{position:absolute;top:-2px;right:-2px;background:#5C7A5E;color:#fff;font-family:"Work Sans",sans-serif;font-size:10px;font-weight:600;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #FBF9F4;}'
-    + '#lme-chat-panel{position:fixed;right:20px;bottom:92px;width:330px;max-width:calc(100vw - 32px);height:440px;max-height:calc(100vh - 140px);background:#FBF9F4;border-radius:16px;box-shadow:0 20px 50px rgba(22,59,68,0.3);display:flex;flex-direction:column;overflow:hidden;z-index:999;font-family:"Work Sans",-apple-system,sans-serif;opacity:0;transform:translateY(12px) scale(.98);pointer-events:none;transition:opacity .22s cubic-bezier(.22,.61,.36,1),transform .22s cubic-bezier(.22,.61,.36,1);}'
+    + '#lme-chat-panel{position:fixed;right:20px;bottom:calc(92px + env(safe-area-inset-bottom));width:330px;max-width:calc(100vw - 32px);height:460px;max-height:calc(100vh - 140px);background:#FBF9F4;border-radius:16px;box-shadow:0 20px 50px rgba(22,59,68,0.3);display:flex;flex-direction:column;overflow:hidden;z-index:999;font-family:"Work Sans",-apple-system,sans-serif;opacity:0;transform:translateY(12px) scale(.98);pointer-events:none;transition:opacity .22s cubic-bezier(.22,.61,.36,1),transform .22s cubic-bezier(.22,.61,.36,1);}'
     + '#lme-chat-panel.is-open{opacity:1;transform:none;pointer-events:auto;}'
     + '.lme-chat-head{background:#163B44;color:#FBF9F4;display:flex;align-items:center;gap:10px;padding:12px 14px;flex:0 0 auto;}'
     + '.lme-chat-head .lme-avatar{width:34px;height:34px;flex:0 0 auto;background:#FBF9F4;border-radius:50%;padding:4px;}'
@@ -136,10 +138,13 @@
     + '.lme-msg.bot{background:#E7DAC2;color:#1B2523;border-bottom-left-radius:4px;align-self:flex-start;}'
     + '.lme-msg.user{background:#163B44;color:#FBF9F4;border-bottom-right-radius:4px;align-self:flex-end;}'
     + '.lme-msg .lme-link-btn{display:inline-block;margin-top:8px;background:#163B44;color:#FBF9F4;padding:6px 12px;border-radius:100px;font-size:.8rem;font-weight:600;text-decoration:none;}'
-    + '.lme-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px;flex:0 0 auto;}'
+    + '.lme-chips{display:flex;flex-wrap:wrap;gap:6px;padding:10px 14px;flex:0 0 auto;border-top:1px solid rgba(22,59,68,0.1);}'
     + '.lme-chip{background:#fff;border:1.5px solid #163B44;color:#163B44;border-radius:100px;padding:6px 12px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:"Work Sans",sans-serif;}'
     + '.lme-chip:hover{background:#163B44;color:#FBF9F4;}'
-    + '@media (max-width:760px){#lme-chat-launcher{bottom:78px;}#lme-chat-panel{bottom:150px;}}'
+    + '.lme-input-row{display:flex;gap:8px;padding:12px 14px;flex:0 0 auto;border-top:1px solid rgba(22,59,68,0.1);}'
+    + '.lme-input-row input{flex:1;font-family:"Work Sans",sans-serif;font-size:.88rem;padding:9px 12px;border-radius:100px;border:1.5px solid #163B44;}'
+    + '.lme-input-row button{background:#163B44;color:#FBF9F4;border:0;border-radius:100px;width:38px;flex:0 0 auto;cursor:pointer;font-size:1rem;}'
+    + '@media (max-width:760px){#lme-chat-launcher{bottom:calc(78px + env(safe-area-inset-bottom));}#lme-chat-panel{bottom:calc(150px + env(safe-area-inset-bottom));}}'
     + '@media (max-width:480px){#lme-chat-panel{right:12px;left:12px;width:auto;}}'
     + '@media (prefers-reduced-motion: reduce){#lme-chat-panel{transition:none;}}';
 
@@ -158,7 +163,7 @@
     launcher.id = 'lme-chat-launcher';
     launcher.setAttribute('aria-label', "Ouvrir l'assistant Coquillette");
     launcher.setAttribute('aria-expanded', 'false');
-    launcher.innerHTML = OYSTER_SVG + '<span class="lme-badge">1</span>';
+    launcher.innerHTML = OYSTER_SVG;
 
     var panel = document.createElement('div');
     panel.id = 'lme-chat-panel';
@@ -167,11 +172,15 @@
     panel.innerHTML =
       '<div class="lme-chat-head">' +
         '<div class="lme-avatar">' + OYSTER_SVG + '</div>' +
-        '<div><strong>Coquillette</strong><span>Réponses rapides</span></div>' +
+        '<div><strong>Coquillette</strong><span>FAQ rapide</span></div>' +
         '<button class="lme-close" aria-label="Fermer">&times;</button>' +
       '</div>' +
       '<div class="lme-chat-body" id="lme-chat-body"></div>' +
-      '<div class="lme-chips" id="lme-chat-chips"></div>';
+      '<div class="lme-chips" id="lme-chat-chips"></div>' +
+      '<form class="lme-input-row" id="lme-chat-form">' +
+        '<input type="text" id="lme-chat-input" placeholder="Posez votre question…" autocomplete="off">' +
+        '<button type="submit" aria-label="Envoyer">→</button>' +
+      '</form>';
 
     document.body.appendChild(launcher);
     document.body.appendChild(panel);
@@ -179,6 +188,8 @@
     var body = panel.querySelector('#lme-chat-body');
     var chipsRow = panel.querySelector('#lme-chat-chips');
     var closeBtn = panel.querySelector('.lme-close');
+    var form = panel.querySelector('#lme-chat-form');
+    var input = panel.querySelector('#lme-chat-input');
     var opened = false;
 
     function addMessage(text, who) {
@@ -196,30 +207,48 @@
       return '<a class="lme-link-btn" href="' + item.linkHref + '"' + target + trackAttr + '>' + item.linkText + '</a>';
     }
 
+    function answerWith(item) {
+      addMessage(item.answer + answerLinkHtml(item), 'bot');
+    }
+
     function renderChips() {
       chipsRow.innerHTML = '';
       FAQ.forEach(function (item) {
         var chip = document.createElement('button');
+        chip.type = 'button';
         chip.className = 'lme-chip';
         chip.textContent = item.chip;
         chip.addEventListener('click', function () {
           addMessage(item.chip, 'user');
-          addMessage(item.answer + answerLinkHtml(item), 'bot');
+          answerWith(item);
         });
         chipsRow.appendChild(chip);
       });
     }
 
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var text = input.value.trim();
+      if (!text) return;
+      addMessage(text, 'user');
+      input.value = '';
+      var match = findAnswer(text);
+      if (match) {
+        answerWith(match);
+      } else {
+        addMessage(FALLBACK, 'bot');
+      }
+    });
+
     function openPanel() {
       opened = true;
       panel.classList.add('is-open');
       launcher.setAttribute('aria-expanded', 'true');
-      var badge = launcher.querySelector('.lme-badge');
-      if (badge) badge.remove();
       if (!body.childNodes.length) {
-        addMessage('Bonjour ! Je suis Coquillette 🦪 Choisissez un sujet ci-dessous, ou écrivez votre question.', 'bot');
+        addMessage('Bonjour ! Je suis Coquillette 🦪 Choisissez un sujet, ou tapez votre question ci-dessous.', 'bot');
         renderChips();
       }
+      setTimeout(function () { input.focus(); }, 300);
     }
 
     function closePanel() {

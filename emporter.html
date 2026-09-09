@@ -2,10 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Commandes à emporter — La Maison de l'Écaille</title>
 <meta name="description" content="Commandez vos huîtres et plateaux de fruits de mer à emporter chez La Maison de l'Écaille, marché des Carmes à Toulouse.">
 <link rel="stylesheet" href="css/style.css">
+<meta property="og:image" content="images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="images/favicon-32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="images/favicon-192.png" sizes="192x192">
@@ -66,8 +68,8 @@
       </div>
       <div class="steps-row reveal">
         <div class="step-card">
-          <h4>Vous appelez ou écrivez</h4>
-          <p>Par téléphone ou via le formulaire, dites-nous ce qu'il vous faut.</p>
+          <h4>Vous remplissez le formulaire</h4>
+          <p>Dites-nous ce qu'il vous faut, pour quand et à quelle heure.</p>
         </div>
         <div class="step-card">
           <h4>On compose votre commande</h4>
@@ -94,15 +96,59 @@
     </div>
   </section>
 
+  <!-- ============ FORMULAIRE DE COMMANDE ============ -->
   <section>
-    <div class="container reveal" style="text-align:center;">
-      <span class="eyebrow">Passer commande</span>
-      <h2>Appelez-nous, ou écrivez-nous</h2>
-      <p class="lede" style="margin:0 auto 28px;">Le plus rapide reste le téléphone, surtout pour une commande le jour même.</p>
-      <div class="hero-actions" style="justify-content:center;">
-        <a class="btn btn-primary" href="tel:+33561000000" data-track="clic_telephone">Appeler le 05 61 00 00 00</a>
-        <a class="btn btn-outline" href="contact.html#contact-form">Écrire un message</a>
+    <div class="container reveal">
+      <div class="center-head">
+        <span class="eyebrow">Passer commande</span>
+        <h2>Votre commande à emporter</h2>
+        <p class="lede">Remplissez ce formulaire, nous confirmons votre créneau de retrait par retour de message.</p>
       </div>
+
+      <form id="order-form" class="form-grid" action="https://formspree.io/f/mrpgovol" method="POST" style="margin:0 auto;">
+        <input type="hidden" name="_subject" value="Nouvelle commande à emporter — La Maison de l'Écaille">
+        <div class="field">
+          <label for="o-nom">Nom et prénom</label>
+          <input type="text" id="o-nom" name="nom" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="o-plateau">Plateau ou produits souhaités</label>
+          <select id="o-plateau" name="plateau">
+            <option>Petit plateau</option>
+            <option>Grand plateau</option>
+            <option>Plateau prestige</option>
+            <option>Plateau dégustation</option>
+            <option>Huîtres au nombre / autre (précisez dans le message)</option>
+          </select>
+        </div>
+        <div class="hours-grid" style="display:grid;gap:20px;grid-template-columns:1fr 1fr;">
+          <div class="field">
+            <label for="o-qte">Quantité</label>
+            <input type="number" id="o-qte" name="quantite" min="1" value="1" required>
+          </div>
+          <div class="field">
+            <label for="o-date">Date de retrait souhaitée</label>
+            <input type="date" id="o-date" name="date" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="o-heure">Heure de retrait souhaitée</label>
+          <input type="time" id="o-heure" name="heure" required>
+        </div>
+        <div class="field">
+          <label for="o-contact">Téléphone ou email</label>
+          <input type="text" id="o-contact" name="contact" required>
+        </div>
+        <div class="field">
+          <label for="o-message">Précisions (facultatif)</label>
+          <textarea id="o-message" name="message" rows="4"></textarea>
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Envoyer ma demande de commande</button>
+          <p class="form-note" style="margin-top:10px;">Le site n'étant pas encore ouvert, les commandes ne sont pas garanties tant que la date d'ouverture n'est pas confirmée — nous revenons vers vous rapidement.</p>
+        </div>
+        <div class="form-status" role="status" aria-live="polite"></div>
+      </form>
     </div>
   </section>
 
@@ -138,15 +184,19 @@
         <h4>Nous trouver</h4>
         <ul>
           <li>Marché des Carmes, Toulouse</li>
-          <li><a href="tel:+33561000000" data-track="clic_telephone">05 61 00 00 00</a></li>
-          <li>Mar–Sam, 11h30–15h &amp; 18h30–22h30</li>
+          <li>Ouverture prochaine</li>
         </ul>
       </div>
+    </div>
+    <div class="footer-legal-links">
+      <a href="mentions-legales.html">Mentions légales</a>
+      <a href="confidentialite.html">Confidentialité</a>
     </div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> La Maison de l'Écaille</span>
       <span>Marché des Carmes, Toulouse</span>
     </div>
+    <p class="footer-alcohol">L'abus d'alcool est dangereux pour la santé. À consommer avec modération.</p>
   </div>
 </footer>
 
