@@ -82,7 +82,7 @@ h3{ font-size: clamp(1.2rem, 2vw, 1.5rem); }
 .nav-links a::after{ content:''; position:absolute; left:0; right:100%; bottom:-2px; height:1.5px; background: var(--algae); transition: right .28s var(--ease); }
 .nav-links a:hover::after, .nav-links a[aria-current="page"]::after{ right:0; }
 .nav-links a[aria-current="page"]{ color: var(--ocean-deep); font-weight: 600; }
-.nav-cta{ display:none; }
+.btn.nav-cta{ display:none; }
 .nav-toggle{ display:flex; background:none; border:1px solid var(--line); border-radius: 100px; width:42px; height:42px; align-items:center; justify-content:center; flex:0 0 auto; }
 .nav-toggle svg{ width:20px; height:20px; }
 .mobile-menu{ display:none; flex-direction:column; gap: 2px; padding: 8px 24px 24px; }
@@ -94,7 +94,7 @@ h3{ font-size: clamp(1.2rem, 2vw, 1.5rem); }
   .nav-links{ display:flex; }
   .nav-toggle{ display:none; }
   .mobile-menu{ display:none !important; }
-  .nav-cta{ display:inline-flex; }
+  .btn.nav-cta{ display:inline-flex; }
 }
 
 .btn{ display:inline-flex; align-items:center; gap:8px; justify-content:center; padding: 13px 26px; border-radius: 100px; font-family: var(--font-body); font-weight: 600; font-size: .95rem; border: 1.5px solid transparent; cursor:pointer; transition: transform .25s var(--ease), background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease); white-space: nowrap; }
