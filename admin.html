@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin (démo) — La Maison de l'Écaille</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="favicon.ico" sizes="any">
+<style>
+  /* Styles propres à cette page, isolés du reste du site */
+  body{ background: var(--sand-light); }
+  .admin-shell{ max-width: 880px; margin: 0 auto; padding: 40px 20px 80px; }
+  .admin-topbar{ display:flex; align-items:center; justify-content:space-between; margin-bottom: 32px; }
+  .admin-topbar .logo-mark{ display:flex; align-items:center; gap:10px; }
+  .admin-topbar img{ height:40px; }
+  .admin-card{ background:#fff; border-radius:14px; padding: 32px; box-shadow: 0 12px 32px rgba(22,59,68,0.08); margin-bottom: 24px; }
+  .admin-warning{ background:#fbe9c9; color:#6b4b12; border-radius:10px; padding:14px 18px; font-size:.88rem; margin-bottom:28px; }
+  .login-wrap{ max-width: 380px; margin: 8vh auto 0; }
+  .login-wrap h1{ font-size:1.6rem; }
+  .denied-wrap{ max-width: 420px; margin: 20vh auto 0; text-align:center; }
+  .tabs{ display:flex; gap:10px; margin-bottom:24px; flex-wrap:wrap; }
+  .tab-btn{ background:#fff; border:1.5px solid var(--line); padding:10px 20px; border-radius:100px; font-family:var(--font-body); font-weight:600; font-size:.9rem; cursor:pointer; color:var(--ink-soft); }
+  .tab-btn.is-active{ border-color:var(--ocean-deep); color:var(--ocean-deep); background:var(--sand-light); }
+  .tab-panel{ display:none; }
+  .tab-panel.is-active{ display:block; }
+  .link-grid{ display:grid; gap:16px; grid-template-columns: 1fr; }
+  @media(min-width:640px){ .link-grid{ grid-template-columns: repeat(2,1fr); } }
+  .link-card{ display:flex; flex-direction:column; gap:6px; border:1.5px solid var(--line); border-radius:12px; padding:18px 20px; }
+  .link-card strong{ font-family:var(--font-display); color:var(--ocean-deep); font-size:1.05rem; }
+  .link-card span{ color:var(--ink-soft); font-size:.88rem; }
+  .link-card a.btn{ align-self:flex-start; margin-top:8px; }
+  .cat-block{ border-top:1px solid var(--line); padding-top:18px; margin-top:18px; }
+  .cat-block h4{ margin-bottom:12px; }
+  .item-row{ display:grid; grid-template-columns: 1fr 1fr 100px 36px; gap:10px; margin-bottom:8px; align-items:center; }
+  .item-row input{ font-family:var(--font-body); padding:8px 10px; border-radius:6px; border:1.5px solid var(--line); font-size:.9rem; }
+  .item-row button{ background:none; border:1.5px solid var(--line); border-radius:6px; height:36px; cursor:pointer; color:#8a3a2f; }
+  .add-row-btn{ font-size:.85rem; color:var(--algae-dark); background:none; border:1.5px dashed var(--algae-dark); border-radius:100px; padding:7px 16px; cursor:pointer; margin-top:6px; }
+  .save-bar{ display:flex; gap:12px; flex-wrap:wrap; margin-top:28px; align-items:center; }
+  .save-msg{ font-size:.88rem; color: var(--algae-dark); }
+  .hours-grid{ display:grid; gap:16px; grid-template-columns: 1fr; }
+  @media(min-width:640px){ .hours-grid{ grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- ============ ACCÈS REFUSÉ (lien/token invalide) ============ -->
+  <div id="gate-denied" class="denied-wrap" hidden>
+    <h1 style="font-size:1.6rem;">Accès refusé</h1>
+    <p style="color:var(--ink-soft);">Ce lien n'est pas valide ou a expiré.</p>
+  </div>
+
+  <!-- ============ ÉCRAN DE CONNEXION ============ -->
+  <div id="login-screen" class="login-wrap" hidden>
+    <div class="admin-card">
+      <h1>Connexion</h1>
+      <p style="color:var(--ink-soft);font-size:.9rem;">Espace réservé — La Maison de l'Écaille</p>
+      <form id="login-form" class="form-grid" style="margin-top:20px;">
+        <div class="field">
+          <label for="login-user">Identifiant</label>
+          <input type="text" id="login-user" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="login-pass">Mot de passe</label>
+          <input type="password" id="login-pass" autocomplete="current-password" required>
+        </div>
+        <p id="login-error" style="color:#8a3a2f;font-size:.88rem;display:none;">Identifiant ou mot de passe incorrect.</p>
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ TABLEAU DE BORD (démo) ============ -->
+  <div id="dashboard" hidden>
+
+    <div class="admin-topbar">
+      <span class="logo-mark"><img src="images/logo-mark.png" alt="La Maison de l'Écaille"><strong style="font-family:var(--font-display);color:var(--ocean-deep);">Admin</strong></span>
+      <button id="logout-btn" class="btn btn-outline btn-sm">Se déconnecter</button>
+    </div>
+
+    <div class="admin-warning">
+      Version démo — cette page n'est pas réellement sécurisée (voir README). Les modifications de la carte et des horaires ci-dessous sont enregistrées uniquement dans ce navigateur, pas sur le site public.
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn is-active" data-tab="apercu">Vue d'ensemble</button>
+      <button class="tab-btn" data-tab="carte">Carte &amp; horaires</button>
+    </div>
+
+    <!-- ---------- Onglet Vue d'ensemble ---------- -->
+    <div class="tab-panel is-active" data-panel="apercu">
+      <div class="admin-card">
+        <h2 style="margin-bottom:20px;">Liens utiles</h2>
+        <div class="link-grid">
+          <div class="link-card">
+            <strong>Messages du formulaire</strong>
+            <span>Consulter les demandes reçues via le formulaire de contact.</span>
+            <a class="btn btn-outline btn-sm" href="https://formspree.io/forms" target="_blank" rel="noopener">Ouvrir Formspree</a>
+          </div>
+          <div class="link-card">
+            <strong>Statistiques du site</strong>
+            <span>Visiteurs, pages vues, clics (à configurer — voir README).</span>
+            <a class="btn btn-outline btn-sm" href="https://analytics.google.com" target="_blank" rel="noopener">Ouvrir Google Analytics</a>
+          </div>
+          <div class="link-card">
+            <strong>Instagram</strong>
+            <span>Gérer les publications et l'audience.</span>
+            <a class="btn btn-outline btn-sm" href="https://www.instagram.com/maisondelecaille/" target="_blank" rel="noopener">Ouvrir Instagram</a>
+          </div>
+          <div class="link-card">
+            <strong>Voir le site public</strong>
+            <span>La page d'accueil telle que les visiteurs la voient.</span>
+            <a class="btn btn-outline btn-sm" href="index.html">Ouvrir le site</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- Onglet Carte & horaires ---------- -->
+    <div class="tab-panel" data-panel="carte">
+      <div class="admin-card">
+        <h2>Horaires</h2>
+        <div class="hours-grid" style="margin-top:16px;">
+          <div class="field"><label>Jours d'ouverture</label><input type="text" id="h-jours"></div>
+          <div class="field"><label>Horaires</label><input type="text" id="h-heures"></div>
+        </div>
+      </div>
+
+      <div class="admin-card">
+        <h2>Carte</h2>
+        <p style="color:var(--ink-soft);font-size:.88rem;">Modifiez, ajoutez ou supprimez des lignes. « Copier en JSON » permet de transmettre les valeurs pour une mise à jour définitive du site.</p>
+        <div id="menu-editor"></div>
+      </div>
+
+      <div class="save-bar">
+        <button id="save-btn" class="btn btn-primary">Enregistrer (dans ce navigateur)</button>
+        <button id="copy-btn" class="btn btn-outline">Copier en JSON</button>
+        <button id="reset-btn" class="btn btn-outline">Réinitialiser</button>
+        <span id="save-msg" class="save-msg" style="display:none;">Enregistré ✓</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  /* =====================================================
+     CONFIGURATION DÉMO — à changer avant toute vraie mise en usage
+     ===================================================== */
+  var ACCESS_TOKEN = "lme-demo-2026-x7q2";
+  var CREDENTIALS = { user: "admin", pass: "EcailleDemo26!" };
+
+  var DEFAULT_DATA = {
+    horaires: { jours: "Mardi – Samedi", heures: "11h30 – 15h & 18h30 – 22h30" },
+    categories: [
+      { nom: "Huîtres", items: [
+        { nom: "Fine de claire n°3", desc: "Arcachon", prix: "15 €" },
+        { nom: "Spéciale de claire n°3", desc: "Affinée 4 semaines", prix: "18 €" }
+      ]},
+      { nom: "Entrées & froid", items: [
+        { nom: "Crevettes, mayonnaise maison", desc: "", prix: "9 €" },
+        { nom: "Bulots", desc: "", prix: "9 €" }
+      ]},
+      { nom: "Chaud", items: [
+        { nom: "Moules marinières", desc: "", prix: "15 €" }
+      ]},
+      { nom: "Boissons", items: [
+        { nom: "Verre de vin blanc", desc: "", prix: "6 €" }
+      ]}
+    ]
+  };
+
+  var STORAGE_KEY = "lme_admin_demo_data";
+
+  function loadData(){
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+    } catch(e){ return JSON.parse(JSON.stringify(DEFAULT_DATA)); }
+  }
+
+  var data = loadData();
+
+  /* ---------- Portail d'accès (token dans l'URL) ---------- */
+  var params = new URLSearchParams(location.search);
+  var hasValidToken = params.get('key') === ACCESS_TOKEN;
+
+  if (!hasValidToken) {
+    document.getElementById('gate-denied').hidden = false;
+    return;
+  }
+
+  var loginScreen = document.getElementById('login-screen');
+  var dashboard = document.getElementById('dashboard');
+
+  function showDashboard(){
+    loginScreen.hidden = true;
+    dashboard.hidden = false;
+    renderHoraires();
+    renderMenuEditor();
+  }
+
+  if (sessionStorage.getItem('lme_admin_session') === '1') {
+    showDashboard();
+  } else {
+    loginScreen.hidden = false;
+  }
+
+  document.getElementById('login-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var u = document.getElementById('login-user').value;
+    var p = document.getElementById('login-pass').value;
+    if (u === CREDENTIALS.user && p === CREDENTIALS.pass) {
+      sessionStorage.setItem('lme_admin_session', '1');
+      document.getElementById('login-error').style.display = 'none';
+      showDashboard();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', function(){
+    sessionStorage.removeItem('lme_admin_session');
+    dashboard.hidden = true;
+    loginScreen.hidden = false;
+    document.getElementById('login-user').value = '';
+    document.getElementById('login-pass').value = '';
+  });
+
+  /* ---------- Onglets ---------- */
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('is-active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      document.querySelector('[data-panel="' + btn.getAttribute('data-tab') + '"]').classList.add('is-active');
+    });
+  });
+
+  /* ---------- Horaires ---------- */
+  function renderHoraires(){
+    document.getElementById('h-jours').value = data.horaires.jours;
+    document.getElementById('h-heures').value = data.horaires.heures;
+  }
+
+  /* ---------- Éditeur de carte ---------- */
+  function renderMenuEditor(){
+    var root = document.getElementById('menu-editor');
+    root.innerHTML = '';
+    data.categories.forEach(function(cat, ci){
+      var block = document.createElement('div');
+      block.className = 'cat-block';
+      var head = document.createElement('h4');
+      head.textContent = cat.nom;
+      block.appendChild(head);
+
+      cat.items.forEach(function(item, ii){
+        block.appendChild(buildItemRow(cat, item, ci, ii));
+      });
+
+      var addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-row-btn';
+      addBtn.textContent = '+ Ajouter un produit';
+      addBtn.addEventListener('click', function(){
+        cat.items.push({ nom: '', desc: '', prix: '' });
+        renderMenuEditor();
+      });
+      block.appendChild(addBtn);
+
+      root.appendChild(block);
+    });
+  }
+
+  function buildItemRow(cat, item, ci, ii){
+    var row = document.createElement('div');
+    row.className = 'item-row';
+
+    var nameInput = document.createElement('input');
+    nameInput.placeholder = 'Nom du produit';
+    nameInput.value = item.nom;
+    nameInput.addEventListener('input', function(){ item.nom = nameInput.value; });
+
+    var descInput = document.createElement('input');
+    descInput.placeholder = 'Description (facultatif)';
+    descInput.value = item.desc || '';
+    descInput.addEventListener('input', function(){ item.desc = descInput.value; });
+
+    var priceInput = document.createElement('input');
+    priceInput.placeholder = 'Prix';
+    priceInput.value = item.prix;
+    priceInput.addEventListener('input', function(){ item.prix = priceInput.value; });
+
+    var delBtn = document.createElement('button');
+    delBtn.type = 'button';
+    delBtn.textContent = '✕';
+    delBtn.addEventListener('click', function(){
+      data.categories[ci].items.splice(ii, 1);
+      renderMenuEditor();
+    });
+
+    row.appendChild(nameInput);
+    row.appendChild(descInput);
+    row.appendChild(priceInput);
+    row.appendChild(delBtn);
+    return row;
+  }
+
+  /* ---------- Sauvegarde / export ---------- */
+  document.getElementById('save-btn').addEventListener('click', function(){
+    data.horaires.jours = document.getElementById('h-jours').value;
+    data.horaires.heures = document.getElementById('h-heures').value;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    var msg = document.getElementById('save-msg');
+    msg.style.display = 'inline';
+    setTimeout(function(){ msg.style.display = 'none'; }, 2500);
+  });
+
+  document.getElementById('copy-btn').addEventListener('click', function(){
+    data.horaires.jours = document.getElementById('h-jours').value;
+    data.horaires.heures = document.getElementById('h-heures').value;
+    var text = JSON.stringify(data, null, 2);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+    }
+    alert("Copié dans le presse-papiers. Transmettez ce texte pour une mise à jour définitive du site.");
+  });
+
+  document.getElementById('reset-btn').addEventListener('click', function(){
+    if (!confirm("Réinitialiser aux valeurs par défaut ? Les modifications locales seront perdues.")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    data = loadData();
+    renderHoraires();
+    renderMenuEditor();
+  });
+})();
+</script>
+</body>
+</html>
