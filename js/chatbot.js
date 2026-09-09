@@ -95,7 +95,7 @@
       keywords: ['instagram', 'photo', 'reseau', 'social'],
       answer: 'Retrouvez nos arrivages et plateaux du jour sur Instagram.',
       linkText: 'Voir l\'Instagram',
-      linkHref: 'https://www.instagram.com/lamaisondelecaille/',
+      linkHref: 'https://www.instagram.com/maisondelecaille/',
       linkTrack: 'clic_instagram'
     }
   ];
