@@ -40,6 +40,23 @@
   .save-msg{ font-size:.88rem; color: var(--algae-dark); }
   .hours-grid{ display:grid; gap:16px; grid-template-columns: 1fr; }
   @media(min-width:640px){ .hours-grid{ grid-template-columns: 1fr 1fr; } }
+  .photo-grid{ display:grid; gap:20px; grid-template-columns: 1fr; margin-top:18px; }
+  @media(min-width:640px){ .photo-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media(min-width:960px){ .photo-grid{ grid-template-columns: repeat(3,1fr); } }
+  .photo-card{ border:1.5px solid var(--line); border-radius:12px; overflow:hidden; display:flex; flex-direction:column; }
+  .photo-card .thumb{ aspect-ratio:4/3; background:var(--ocean-soft); position:relative; overflow:hidden; }
+  .photo-card .thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .photo-card .thumb .badge{ position:absolute; top:8px; left:8px; background:var(--algae-dark); color:#fff; font-size:.7rem; padding:3px 9px; border-radius:100px; }
+  .photo-card .body{ padding:14px; display:flex; flex-direction:column; gap:8px; }
+  .photo-card .label{ font-family:var(--font-display); color:var(--ocean-deep); font-size:.95rem; }
+  .photo-card input[type="text"]{ font-family:var(--font-body); font-size:.85rem; padding:7px 10px; border-radius:6px; border:1.5px solid var(--line); }
+  .photo-card .row-btns{ display:flex; gap:8px; flex-wrap:wrap; }
+  .photo-card .row-btns .btn{ padding:7px 12px; font-size:.78rem; }
+  .gallery-item{ display:grid; grid-template-columns: 70px 1fr auto; gap:14px; align-items:center; padding:10px 0; border-bottom:1px solid var(--line); }
+  .gallery-item img{ width:70px; height:56px; object-fit:cover; border-radius:6px; }
+  .gallery-item input[type="text"]{ font-family:var(--font-body); font-size:.85rem; padding:7px 10px; border-radius:6px; border:1.5px solid var(--line); width:100%; }
+  .gallery-item .g-btns{ display:flex; gap:6px; }
+  .gallery-item .g-btns button{ background:none; border:1.5px solid var(--line); border-radius:6px; width:32px; height:32px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -87,6 +104,7 @@
     <div class="tabs">
       <button class="tab-btn is-active" data-tab="apercu">Vue d'ensemble</button>
       <button class="tab-btn" data-tab="carte">Carte &amp; horaires</button>
+      <button class="tab-btn" data-tab="photos">Photos</button>
     </div>
 
     <!-- ---------- Onglet Vue d'ensemble ---------- -->
@@ -142,6 +160,31 @@
       </div>
     </div>
 
+    <!-- ---------- Onglet Photos ---------- -->
+    <div class="tab-panel" data-panel="photos">
+      <div class="admin-card">
+        <h2>Emplacements fixes</h2>
+        <p style="color:var(--ink-soft);font-size:.88rem;">Une photo par emplacement du site. Remplacez, puis téléchargez le fichier pour le transmettre.</p>
+        <div id="fixed-photo-grid" class="photo-grid"></div>
+      </div>
+
+      <div class="admin-card">
+        <h2>Galerie</h2>
+        <p style="color:var(--ink-soft);font-size:.88rem;">Réorganisez, légendez, supprimez ou ajoutez des photos à la page Galerie.</p>
+        <div id="gallery-editor"></div>
+        <div class="field" style="margin-top:20px;max-width:320px;">
+          <label>Ajouter une photo</label>
+          <input type="file" id="gallery-add-input" accept="image/*">
+        </div>
+      </div>
+
+      <div class="save-bar">
+        <button id="save-photos-btn" class="btn btn-primary">Enregistrer (dans ce navigateur)</button>
+        <button id="reset-photos-btn" class="btn btn-outline">Réinitialiser les photos</button>
+        <span id="save-photos-msg" class="save-msg" style="display:none;">Enregistré ✓</span>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -170,7 +213,37 @@
       { nom: "Boissons", items: [
         { nom: "Verre de vin blanc", desc: "", prix: "6 €" }
       ]}
-    ]
+    ],
+    fixedPhotos: [
+      { id: "accueil_hero", path: "images/huitres-plateau-1.jpg", label: "Accueil — grande photo d'en-tête", alt: "Plateau de fruits de mer" },
+      { id: "accueil_tuile_huitres", path: "images/huitres-vue-dessus-1.jpg", label: "Accueil — vignette Huîtres", alt: "Huîtres, bulots et crevettes" },
+      { id: "accueil_tuile_plateaux", path: "images/comptoir-large.jpg", label: "Accueil — vignette Plateaux", alt: "Grand plateau du comptoir" },
+      { id: "concept_photo1", path: "images/evenement-marche-2.jpg", label: "Concept — équipe au comptoir", alt: "L'équipe prête à servir" },
+      { id: "concept_photo2", path: "images/evenement-marche-3.jpg", label: "Concept — plateau préparé", alt: "Grand plateau préparé" },
+      { id: "provenance_photo", path: "images/huitres-crevettes.jpg", label: "Provenance — photo principale", alt: "Huîtres et crevettes fraîches" },
+      { id: "plateau_petit", path: "images/huitres-plateau-1.jpg", label: "Plateaux — Petit plateau", alt: "Petit plateau de fruits de mer" },
+      { id: "plateau_grand", path: "images/comptoir-large.jpg", label: "Plateaux — Grand plateau", alt: "Grand plateau de fruits de mer" },
+      { id: "plateau_prestige", path: "images/evenement-marche-3.jpg", label: "Plateaux — Plateau prestige", alt: "Plateau prestige de fruits de mer" },
+      { id: "plateau_degustation", path: "images/evenement-marche-1.jpg", label: "Plateaux — Plateau dégustation", alt: "Plateau dégustation de fruits de mer" },
+      { id: "emporter_photo", path: "images/evenement-marche-2.jpg", label: "À emporter — préparation commande", alt: "Préparation d'une commande à emporter" },
+      { id: "evenements_hero", path: "images/evenement-marche-3.jpg", label: "Événements — photo d'en-tête", alt: "Stand de fruits de mer en extérieur" },
+      { id: "evenements_photo1", path: "images/evenement-marche-1.jpg", label: "Événements — en images (1)", alt: "Préparation des plateaux" },
+      { id: "evenements_photo2", path: "images/evenement-marche-2.jpg", label: "Événements — en images (2)", alt: "Équipe prête à servir" },
+      { id: "evenements_photo3", path: "images/evenement-marche-3.jpg", label: "Événements — en images (3)", alt: "Stand en extérieur" }
+    ],
+    galleryItems: [
+      { id: "g1", path: "images/huitres-plateau-1.jpg", caption: "Plateau rond d'huîtres, crevettes et bulots", removed: false },
+      { id: "g2", path: "images/comptoir-large.jpg", caption: "Grand plateau du comptoir avec huîtres et crevettes", removed: false },
+      { id: "g3", path: "images/evenement-marche-1.jpg", caption: "Préparation des plateaux lors d'un événement", removed: false },
+      { id: "g4", path: "images/evenement-marche-2.jpg", caption: "Notre équipe prête à servir", removed: false },
+      { id: "g5", path: "images/huitres-vue-dessus-1.jpg", caption: "Vue de dessus : huîtres, bulots et crevettes", removed: false },
+      { id: "g6", path: "images/huitres-vue-dessus-2.jpg", caption: "Huîtres et fruits de mer sur glace", removed: false },
+      { id: "g7", path: "images/huitres-crevettes.jpg", caption: "Douzaine d'huîtres et crevettes", removed: false },
+      { id: "g8", path: "images/evenement-marche-3.jpg", caption: "Stand de fruits de mer en extérieur", removed: false },
+      { id: "g9", path: null, caption: "Le comptoir du marché des Carmes", removed: false },
+      { id: "g10", path: null, caption: "Terrasse", removed: false }
+    ],
+    photoOverrides: {}
   };
 
   var STORAGE_KEY = "lme_admin_demo_data";
@@ -201,6 +274,8 @@
     dashboard.hidden = false;
     renderHoraires();
     renderMenuEditor();
+    renderFixedPhotos();
+    renderGallery();
   }
 
   if (sessionStorage.getItem('lme_admin_session') === '1') {
@@ -309,11 +384,249 @@
     return row;
   }
 
+  /* ---------- Utilitaires photos ---------- */
+  function resizeImageFile(file, maxDim, quality, cb){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var img = new Image();
+      img.onload = function(){
+        var w = img.width, h = img.height;
+        var scale = Math.min(1, maxDim / Math.max(w, h));
+        var cw = Math.max(1, Math.round(w * scale));
+        var ch = Math.max(1, Math.round(h * scale));
+        var canvas = document.createElement('canvas');
+        canvas.width = cw; canvas.height = ch;
+        canvas.getContext('2d').drawImage(img, 0, 0, cw, ch);
+        cb(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function downloadDataUrl(dataUrl, filename){
+    var a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  }
+
+  function suggestFilename(originalPath, fallbackId){
+    if (originalPath) {
+      var parts = originalPath.split('/');
+      return parts[parts.length - 1];
+    }
+    return fallbackId + '.jpg';
+  }
+
+  /* ---------- Emplacements fixes ---------- */
+  function renderFixedPhotos(){
+    var root = document.getElementById('fixed-photo-grid');
+    root.innerHTML = '';
+    data.fixedPhotos.forEach(function(slot){
+      var override = data.photoOverrides[slot.id];
+      var card = document.createElement('div');
+      card.className = 'photo-card';
+
+      var thumb = document.createElement('div');
+      thumb.className = 'thumb';
+      var img = document.createElement('img');
+      img.src = override ? override.dataUrl : slot.path;
+      thumb.appendChild(img);
+      if (override) {
+        var badge = document.createElement('span');
+        badge.className = 'badge';
+        badge.textContent = 'Modifié (local)';
+        thumb.appendChild(badge);
+      }
+      card.appendChild(thumb);
+
+      var body = document.createElement('div');
+      body.className = 'body';
+
+      var label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = slot.label;
+      body.appendChild(label);
+
+      var altInput = document.createElement('input');
+      altInput.type = 'text';
+      altInput.value = slot.alt;
+      altInput.placeholder = 'Texte alternatif (alt)';
+      altInput.addEventListener('input', function(){ slot.alt = altInput.value; });
+      body.appendChild(altInput);
+
+      var fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.style.fontSize = '.8rem';
+      fileInput.addEventListener('change', function(){
+        if (!fileInput.files[0]) return;
+        resizeImageFile(fileInput.files[0], 1400, 0.72, function(dataUrl){
+          data.photoOverrides[slot.id] = { dataUrl: dataUrl, filename: suggestFilename(slot.path, slot.id) };
+          renderFixedPhotos();
+        });
+      });
+      body.appendChild(fileInput);
+
+      var btns = document.createElement('div');
+      btns.className = 'row-btns';
+      if (override) {
+        var dlBtn = document.createElement('button');
+        dlBtn.className = 'btn btn-outline';
+        dlBtn.type = 'button';
+        dlBtn.textContent = 'Télécharger';
+        dlBtn.addEventListener('click', function(){
+          downloadDataUrl(override.dataUrl, override.filename);
+        });
+        var undoBtn = document.createElement('button');
+        undoBtn.className = 'btn btn-outline';
+        undoBtn.type = 'button';
+        undoBtn.textContent = 'Annuler';
+        undoBtn.addEventListener('click', function(){
+          delete data.photoOverrides[slot.id];
+          renderFixedPhotos();
+        });
+        btns.appendChild(dlBtn);
+        btns.appendChild(undoBtn);
+      }
+      body.appendChild(btns);
+
+      card.appendChild(body);
+      root.appendChild(card);
+    });
+  }
+
+  /* ---------- Galerie ---------- */
+  function renderGallery(){
+    var root = document.getElementById('gallery-editor');
+    root.innerHTML = '';
+    data.galleryItems.forEach(function(item, index){
+      if (item.removed) return;
+      var override = data.photoOverrides[item.id];
+      var row = document.createElement('div');
+      row.className = 'gallery-item';
+
+      var img = document.createElement('img');
+      img.src = override ? override.dataUrl : (item.path || '');
+      if (!item.path && !override) { img.style.background = 'var(--ocean-soft)'; img.removeAttribute('src'); }
+      row.appendChild(img);
+
+      var captionInput = document.createElement('input');
+      captionInput.type = 'text';
+      captionInput.value = item.caption;
+      captionInput.addEventListener('input', function(){ item.caption = captionInput.value; });
+      row.appendChild(captionInput);
+
+      var btns = document.createElement('div');
+      btns.className = 'g-btns';
+
+      var upBtn = document.createElement('button');
+      upBtn.type = 'button'; upBtn.title = 'Monter'; upBtn.textContent = '↑';
+      upBtn.addEventListener('click', function(){
+        if (index > 0) {
+          var tmp = data.galleryItems[index - 1];
+          data.galleryItems[index - 1] = data.galleryItems[index];
+          data.galleryItems[index] = tmp;
+          renderGallery();
+        }
+      });
+
+      var downBtn = document.createElement('button');
+      downBtn.type = 'button'; downBtn.title = 'Descendre'; downBtn.textContent = '↓';
+      downBtn.addEventListener('click', function(){
+        if (index < data.galleryItems.length - 1) {
+          var tmp2 = data.galleryItems[index + 1];
+          data.galleryItems[index + 1] = data.galleryItems[index];
+          data.galleryItems[index] = tmp2;
+          renderGallery();
+        }
+      });
+
+      var fileBtn = document.createElement('input');
+      fileBtn.type = 'file'; fileBtn.accept = 'image/*';
+      fileBtn.style.width = '32px'; fileBtn.style.opacity = '0'; fileBtn.style.position='absolute';
+      var fileLabel = document.createElement('label');
+      fileLabel.title = 'Remplacer la photo';
+      fileLabel.textContent = '📷';
+      fileLabel.style.cursor = 'pointer';
+      fileLabel.style.display = 'flex'; fileLabel.style.alignItems='center'; fileLabel.style.justifyContent='center';
+      fileLabel.style.border = '1.5px solid var(--line)'; fileLabel.style.borderRadius='6px'; fileLabel.style.width='32px'; fileLabel.style.height='32px'; fileLabel.style.position='relative';
+      fileLabel.appendChild(fileBtn);
+      fileBtn.addEventListener('change', function(){
+        if (!fileBtn.files[0]) return;
+        resizeImageFile(fileBtn.files[0], 1200, 0.7, function(dataUrl){
+          data.photoOverrides[item.id] = { dataUrl: dataUrl, filename: suggestFilename(item.path, item.id) };
+          renderGallery();
+        });
+      });
+
+      var delBtn = document.createElement('button');
+      delBtn.type = 'button'; delBtn.title = 'Supprimer'; delBtn.textContent = '✕'; delBtn.style.color = '#8a3a2f';
+      delBtn.addEventListener('click', function(){
+        if (!confirm('Retirer cette photo de la galerie ?')) return;
+        item.removed = true;
+        renderGallery();
+      });
+
+      btns.appendChild(upBtn);
+      btns.appendChild(downBtn);
+      btns.appendChild(fileLabel);
+      btns.appendChild(delBtn);
+      row.appendChild(btns);
+
+      root.appendChild(row);
+    });
+  }
+
+  document.getElementById('gallery-add-input').addEventListener('change', function(e){
+    var file = e.target.files[0];
+    if (!file) return;
+    resizeImageFile(file, 1200, 0.7, function(dataUrl){
+      var id = 'new_' + Date.now();
+      data.galleryItems.push({ id: id, path: null, caption: '', removed: false });
+      data.photoOverrides[id] = { dataUrl: dataUrl, filename: file.name };
+      renderGallery();
+      e.target.value = '';
+    });
+  });
+
+  function trySave(){
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      return true;
+    } catch (e) {
+      alert("Stockage local plein (trop de photos modifiées gardées en mémoire). Téléchargez les photos importantes, puis utilisez « Réinitialiser » pour repartir sur une base propre.");
+      return false;
+    }
+  }
+
+  function saveAll(){
+    return trySave();
+  }
+
+  document.getElementById('save-photos-btn').addEventListener('click', function(){
+    saveAll();
+    var msg = document.getElementById('save-photos-msg');
+    msg.style.display = 'inline';
+    setTimeout(function(){ msg.style.display = 'none'; }, 2500);
+  });
+
+  document.getElementById('reset-photos-btn').addEventListener('click', function(){
+    if (!confirm('Réinitialiser toutes les photos aux valeurs par défaut ?')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    data = loadData();
+    renderFixedPhotos();
+    renderGallery();
+  });
+
   /* ---------- Sauvegarde / export ---------- */
   document.getElementById('save-btn').addEventListener('click', function(){
     data.horaires.jours = document.getElementById('h-jours').value;
     data.horaires.heures = document.getElementById('h-heures').value;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    if (!trySave()) return;
     var msg = document.getElementById('save-msg');
     msg.style.display = 'inline';
     setTimeout(function(){ msg.style.display = 'none'; }, 2500);
@@ -335,6 +648,8 @@
     data = loadData();
     renderHoraires();
     renderMenuEditor();
+    renderFixedPhotos();
+    renderGallery();
   });
 })();
 </script>
