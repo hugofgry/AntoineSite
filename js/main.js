@@ -50,6 +50,23 @@ document.addEventListener('DOMContentLoaded', function () {
     revealEls.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
+  /* ---------- Onglets de filtre (page Notre carte) ---------- */
+  var tabs = document.querySelectorAll('[data-menu-tab]');
+  var cats = document.querySelectorAll('[data-menu-cat]');
+  if (tabs.length && cats.length) {
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('is-active'); });
+        tab.classList.add('is-active');
+        var target = tab.getAttribute('data-menu-tab');
+        cats.forEach(function (cat) {
+          var show = target === 'tous' || cat.getAttribute('data-menu-cat') === target;
+          cat.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  }
+
   /* ---------- Carrousel (galerie / ambiance) ---------- */
   document.querySelectorAll('[data-carousel]').forEach(function (carousel) {
     var track = carousel.querySelector('.carousel-track');

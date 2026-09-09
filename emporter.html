@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — La Maison de l'Écaille</title>
-<meta name="description" content="Horaires, adresse et formulaire de contact de La Maison de l'Écaille, marché des Carmes à Toulouse.">
+<title>Commandes à emporter — La Maison de l'Écaille</title>
+<meta name="description" content="Commandez vos huîtres et plateaux de fruits de mer à emporter chez La Maison de l'Écaille, marché des Carmes à Toulouse.">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -20,9 +20,9 @@
       <li><a href="concept.html">Notre concept</a></li>
       <li><a href="evenements.html">Événements</a></li>
       <li><a href="galerie.html">Galerie</a></li>
-      <li><a href="contact.html" aria-current="page">Contact</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
-    <a class="btn btn-outline nav-cta" href="emporter.html">Commander un plateau</a>
+    <a class="btn btn-outline nav-cta" href="emporter.html" aria-current="page">Commander un plateau</a>
     <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
     </button>
@@ -44,75 +44,57 @@
 
   <section class="page-header">
     <div class="container reveal">
-      <span class="eyebrow">Horaires, adresse &amp; contact</span>
-      <h1 style="font-size:clamp(2rem,4vw,3rem);">Une question, une envie de commander&nbsp;?</h1>
-      <p class="lede" style="margin-top:14px;">Écrivez-nous via le formulaire, ou contactez-nous directement.</p>
+      <span class="eyebrow">Commandes à emporter</span>
+      <h1 style="font-size:clamp(2rem,4vw,3rem);">Vos huîtres et plateaux, prêts à emporter</h1>
+      <p class="lede" style="margin-top:14px;">Composez votre commande, à retirer directement au marché des Carmes.</p>
     </div>
   </section>
 
-  <section id="infos">
-    <div class="container infos-grid reveal">
-      <div>
-        <span class="eyebrow">Infos pratiques</span>
-        <h2>Nous trouver</h2>
-        <dl class="infos-list">
-          <dt>Adresse</dt>
-          <dd>Marché des Carmes, Place des Carmes, 31000 Toulouse</dd>
-          <dt>Horaires</dt>
-          <dd>Mardi – Samedi : 11h30 – 15h &amp; 18h30 – 22h30<br>Dimanche – Lundi : fermé</dd>
-          <dt>Téléphone</dt>
-          <dd><a href="tel:+33561000000" data-track="clic_telephone">05 61 00 00 00</a></dd>
-          <dt>Email</dt>
-          <dd><a href="mailto:contact@lamaisondelecaille.fr">contact@lamaisondelecaille.fr</a></dd>
-        </dl>
-        <div class="hero-actions" style="margin-top:28px;">
-          <a class="btn btn-outline" href="https://www.google.com/maps?q=March%C3%A9+des+Carmes,+Toulouse" target="_blank" rel="noopener" data-track="clic_itineraire">Itinéraire</a>
-          <a class="btn btn-outline" href="https://www.instagram.com/lamaisondelecaille/" target="_blank" rel="noopener" data-track="clic_instagram">Instagram</a>
+  <section>
+    <div class="container">
+      <div class="center-head reveal">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2>Trois étapes, très simples</h2>
+      </div>
+      <div class="steps-row reveal">
+        <div class="step-card">
+          <h4>Vous appelez ou écrivez</h4>
+          <p>Par téléphone ou via le formulaire, dites-nous ce qu'il vous faut.</p>
+        </div>
+        <div class="step-card">
+          <h4>On compose votre commande</h4>
+          <p>Selon vos envies et les arrivages du jour.</p>
+        </div>
+        <div class="step-card">
+          <h4>Vous récupérez sur place</h4>
+          <p>Au comptoir, au marché des Carmes, à l'heure convenue.</p>
         </div>
       </div>
-      <iframe class="map-frame" title="Localisation de La Maison de l'Écaille sur Google Maps" loading="lazy" src="https://www.google.com/maps?q=March%C3%A9+des+Carmes,+Toulouse&output=embed"></iframe>
     </div>
   </section>
 
-  <!-- ============ FORMULAIRE ============ -->
   <section class="section-sand">
-    <div class="container reveal">
-      <span class="eyebrow">Écrivez-nous</span>
-      <h2 style="margin-bottom:28px;">Formulaire de contact</h2>
+    <div class="container split reverse reveal">
+      <div class="ph" style="--ar:5/4;overflow:hidden;"><img src="images/evenement-marche-2.jpg" alt="Préparation d'une commande à emporter"></div>
+      <div>
+        <span class="eyebrow">Que pouvez-vous commander ?</span>
+        <h2>Huîtres, plateaux, et le reste de la carte</h2>
+        <p>Tous nos plateaux (petit, grand, prestige, dégustation) sont disponibles à emporter, ainsi que les huîtres au nombre, les entrées froides et certaines préparations chaudes.</p>
+        <p>Pour une réception ou un événement, voir aussi notre page dédiée.</p>
+        <a class="btn btn-outline" href="evenements.html">Événements &amp; prestations</a>
+      </div>
+    </div>
+  </section>
 
-      <!-- L'attribut "action" doit être remplacé par votre lien Formspree (voir README.md) -->
-      <form id="contact-form" class="form-grid" action="https://formspree.io/f/VOTRE_ID" method="POST">
-        <div class="field">
-          <label for="nom">Nom et prénom</label>
-          <input type="text" id="nom" name="nom" required autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="telephone">Téléphone (facultatif)</label>
-          <input type="tel" id="telephone" name="telephone" autocomplete="tel">
-        </div>
-        <div class="field">
-          <label for="sujet">Sujet</label>
-          <select id="sujet" name="sujet">
-            <option>Question générale</option>
-            <option>Commande à emporter</option>
-            <option>Événement / prestation</option>
-            <option>Autre</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="message">Votre message</label>
-          <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-        <div>
-          <button type="submit" class="btn btn-primary">Envoyer le message</button>
-          <p class="form-note" style="margin-top:10px;">Nous répondons en général sous 48h.</p>
-        </div>
-        <div class="form-status" role="status" aria-live="polite"></div>
-      </form>
+  <section>
+    <div class="container reveal" style="text-align:center;">
+      <span class="eyebrow">Passer commande</span>
+      <h2>Appelez-nous, ou écrivez-nous</h2>
+      <p class="lede" style="margin:0 auto 28px;">Le plus rapide reste le téléphone, surtout pour une commande le jour même.</p>
+      <div class="hero-actions" style="justify-content:center;">
+        <a class="btn btn-primary" href="tel:+33561000000" data-track="clic_telephone">Appeler le 05 61 00 00 00</a>
+        <a class="btn btn-outline" href="contact.html#contact-form">Écrire un message</a>
+      </div>
     </div>
   </section>
 

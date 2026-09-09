@@ -36,39 +36,56 @@
       id: 'horaires',
       chip: 'Horaires',
       keywords: ['horaire', 'heure', 'ouvert', 'ouverture', 'ferme', 'fermeture'],
-      answer: 'Nous sommes ouverts du <strong>mardi au samedi</strong>, de 11h30 à 15h et de 18h30 à 22h30. Fermé le dimanche et le lundi.'
+      answer: 'Nous sommes ouverts du <strong>mardi au samedi</strong>, de 11h30 à 15h et de 18h30 à 22h30. Fermé le dimanche et le lundi.',
+      linkText: 'Horaires & adresse',
+      linkHref: 'contact.html'
     },
     {
       id: 'adresse',
       chip: 'Adresse',
       keywords: ['adresse', 'ou', 'localis', 'trouve', 'itineraire', 'parking', 'venir'],
-      answer: 'Nous sommes au <strong>marché des Carmes</strong>, Place des Carmes, 33000 Bordeaux.',
+      answer: 'Nous sommes au <strong>marché des Carmes</strong>, Place des Carmes, 31000 Toulouse.',
       linkText: 'Voir l\'itinéraire',
-      linkHref: 'https://www.google.com/maps?q=March%C3%A9+des+Carmes,+Bordeaux',
+      linkHref: 'https://www.google.com/maps?q=March%C3%A9+des+Carmes,+Toulouse',
       linkTrack: 'clic_itineraire'
     },
     {
       id: 'carte',
       chip: 'La carte',
-      keywords: ['carte', 'menu', 'prix', 'tarif', 'huitre', 'plateau', 'boisson', 'vin', 'manger'],
-      answer: 'Notre carte propose des huîtres du bassin, des fruits de mer, des plateaux à partager et une sélection de vins et boissons.',
+      keywords: ['carte', 'menu', 'prix', 'tarif', 'huitre', 'moule', 'entree', 'manger'],
+      answer: 'Notre carte propose des huîtres du bassin d\'Arcachon, des entrées froides, des moules et plats chauds, ainsi que boissons et vins.',
       linkText: 'Voir la carte complète',
       linkHref: 'carte.html'
     },
     {
-      id: 'reservation',
-      chip: 'Réservation',
-      keywords: ['reserv', 'table', 'grouper', 'groupe'],
-      answer: 'Nous ne prenons pas de réservation en ligne pour le moment. Le plus simple est de nous appeler directement.',
-      linkText: 'Appeler le 05 00 00 00 00',
-      linkHref: 'tel:+33500000000',
-      linkTrack: 'clic_telephone'
+      id: 'plateaux',
+      chip: 'Nos plateaux',
+      keywords: ['plateau', 'prestige', 'degustation'],
+      answer: 'Petit plateau, grand plateau, plateau prestige ou plateau dégustation : à composer selon vos envies et les arrivages.',
+      linkText: 'Voir les plateaux',
+      linkHref: 'plateaux.html'
+    },
+    {
+      id: 'emporter',
+      chip: 'À emporter',
+      keywords: ['emporter', 'commande', 'commander', 'retirer', 'take away'],
+      answer: 'Vous pouvez commander vos plateaux et produits à emporter, à retirer directement au marché des Carmes.',
+      linkText: 'Commander un plateau',
+      linkHref: 'emporter.html'
+    },
+    {
+      id: 'evenements',
+      chip: 'Événements',
+      keywords: ['evenement', 'prestation', 'reception', 'anniversaire', 'entreprise', 'traiteur'],
+      answer: 'Nous intervenons aussi pour vos réceptions et événements privés ou professionnels, avec plateaux et service sur place.',
+      linkText: 'Voir nos prestations',
+      linkHref: 'evenements.html'
     },
     {
       id: 'contact',
       chip: 'Nous contacter',
       keywords: ['contact', 'telephone', 'appel', 'mail', 'email', 'ecrire', 'joindre'],
-      answer: 'Vous pouvez nous appeler au 05 00 00 00 00, ou passer par notre formulaire de contact.',
+      answer: 'Vous pouvez nous appeler au 05 61 00 00 00, ou passer par notre formulaire de contact.',
       linkText: 'Ouvrir le formulaire',
       linkHref: 'contact.html#contact-form'
     },
@@ -83,7 +100,7 @@
     }
   ];
 
-  var FALLBACK = 'Je n\'ai pas de réponse toute prête pour ça. Le plus sûr est de nous appeler au 05 00 00 00 00, ou d\'utiliser le formulaire de contact.';
+  var FALLBACK = 'Je n\'ai pas de réponse toute prête pour ça. Le plus sûr est de nous appeler au 05 61 00 00 00, ou d\'utiliser le formulaire de contact.';
 
   function normalize(str) {
     return str.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -122,7 +139,8 @@
     + '.lme-chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 12px;flex:0 0 auto;}'
     + '.lme-chip{background:#fff;border:1.5px solid #163B44;color:#163B44;border-radius:100px;padding:6px 12px;font-size:.8rem;font-weight:600;cursor:pointer;font-family:"Work Sans",sans-serif;}'
     + '.lme-chip:hover{background:#163B44;color:#FBF9F4;}'
-    + '@media (max-width:480px){#lme-chat-panel{right:12px;left:12px;width:auto;bottom:88px;}}'
+    + '@media (max-width:760px){#lme-chat-launcher{bottom:78px;}#lme-chat-panel{bottom:150px;}}'
+    + '@media (max-width:480px){#lme-chat-panel{right:12px;left:12px;width:auto;}}'
     + '@media (prefers-reduced-motion: reduce){#lme-chat-panel{transition:none;}}';
 
   function injectStyles() {

@@ -1,95 +1,89 @@
-# La Maison de l'Écaille — site vitrine
+# La Maison de l'Écaille — site vitrine (v2, Toulouse)
 
-Site statique en HTML/CSS/JS, sans base de données ni back-office : léger, rapide, et modifiable directement dans les fichiers avec un éditeur de texte simple (Bloc-notes, VS Code, etc.).
+Site statique en HTML/CSS/JS, sans base de données ni back-office. Cette version remplace entièrement la précédente version (qui indiquait Bordeaux) : nouvelle structure, nouveau contenu, votre logo, et un petit chatbot de FAQ ("Coquillette").
 
 ## Structure des fichiers
 
 ```
 index.html        → Accueil
-carte.html         → La carte (huîtres, fruits de mer, plateaux, boissons)
-histoire.html      → Notre histoire + équipe
+concept.html       → Notre concept (histoire, valeurs)
+carte.html         → Notre carte (huîtres, entrées, chaud, boissons — avec filtres)
+plateaux.html      → Nos plateaux de fruits de mer
+provenance.html    → Provenance & qualité de nos produits
+emporter.html      → Commandes à emporter
+evenements.html    → Événements & prestations
 galerie.html       → Galerie photos
-contact.html       → Infos pratiques, carte Google Maps, formulaire
+contact.html       → Horaires, adresse, carte Google Maps, formulaire
 css/style.css       → Toutes les couleurs, polices, mises en page
-js/main.js          → Menu mobile, effets au défilement, carrousel, formulaire, statistiques
+js/main.js          → Menu mobile, effets au défilement, carrousel, filtres carte, formulaire
+js/chatbot.js       → Le chatbot "Coquillette" (FAQ pré-écrite)
+images/             → Vos photos + le logo
 ```
 
-## Ce que vous pouvez modifier vous-même
+## Nouveautés de cette version
 
-### La carte (menu et tarifs)
-Ouvrez `carte.html`. Chaque plat est un bloc :
-```html
-<li class="menu-item">
-  <span><span class="menu-item-name">Fine de claire n°3</span><span class="menu-item-desc">Bassin d'Arcachon</span></span>
-  <span class="menu-item-price">15 €</span>
-</li>
-```
-- Changer un prix ou un nom : modifiez le texte entre les balises.
-- Ajouter un produit : copiez un bloc `<li class="menu-item">…</li>` entier, collez-le juste après, puis changez son contenu.
-- Supprimer un produit : supprimez le bloc en entier.
+- **Ville corrigée** : Toulouse (Marché des Carmes, Place des Carmes, 31000 Toulouse) partout sur le site.
+- **Votre logo** intégré dans la navigation et le pied de page (`images/logo.png`, fond détouré).
+- **Nouvelle structure** en 9 pages, reprenant toutes les rubriques de votre brief.
+- **Nouvelle carte** complète (entrées froides, chaud, plateaux, boissons) avec des filtres cliquables.
+- **4 plateaux** détaillés sur leur propre page (Petit, Grand, Prestige, Dégustation).
+- **Page Provenance & qualité** avec les étapes "de la mer à votre table".
+- **Page Commandes à emporter**.
+- **Page Événements & prestations**, qui utilise vos 3 photos de stand/marché.
+- **Accents "manuscrits"** (police Caveat) pour les slogans, en plus de la police élégante et du texte courant — comme demandé dans le brief.
+- **Petites illustrations dessinées** (huître, moule, bouteille, algue) en SVG, 100% originales.
+- **Barre de commande fixe en bas de l'écran sur mobile** ("Commander un plateau" / "Appeler"), pour faciliter la conversion.
+- **Chatbot "Coquillette"** en bas à droite : répond aux questions fréquentes (horaires, adresse, carte, plateaux, à emporter, événements, contact, Instagram) sans IA ni coût.
 
-### Les horaires et l'adresse
-Ils apparaissent à trois endroits : `index.html` (section infos pratiques et pied de page), `contact.html` et le pied de page de chaque page. Cherchez le texte des horaires (ex. « Mardi – Samedi ») et remplacez-le partout où il apparaît.
+## Vos photos actuellement utilisées
+
+- `huitres-plateau-1.jpg`, `comptoir-large.jpg`, `huitres-vue-dessus-1.jpg`, `huitres-vue-dessus-2.jpg`, `huitres-crevettes.jpg` → vos photos de plateaux (accueil, carte, plateaux, galerie).
+- `evenement-marche-1.jpg`, `evenement-marche-2.jpg`, `evenement-marche-3.jpg` → vos photos de stand/événement (concept, plateaux, emporter, événements, galerie).
+
+Il reste 2 emplacements "Photo à venir" dans `galerie.html` (comptoir permanent du marché des Carmes, terrasse) — à remplacer dès que vous avez ces photos, selon la méthode ci-dessous.
+
+## Modifier le contenu vous-même
+
+### La carte et les plateaux
+Ouvrez `carte.html` ou `plateaux.html`. Chaque plat/plateau est un bloc clairement commenté (`<li class="menu-item">` ou `<div class="plateau-card">`). Copiez/collez un bloc pour ajouter, supprimez-le pour retirer, modifiez le texte pour changer un prix ou une description.
 
 ### Les photos
-5 de vos photos sont déjà intégrées dans le dossier `images/` et utilisées sur le site (hero de l'accueil, tuiles "carte", carrousel ambiance, galerie) :
-`huitres-plateau-1.jpg`, `comptoir-large.jpg`, `huitres-vue-dessus-1.jpg`, `huitres-vue-dessus-2.jpg`, `huitres-crevettes.jpg`.
-
-Il reste des rectangles bleu/vert temporaires (« Photo à venir ») aux endroits où il manque encore une photo précise : la loge/comptoir, l'équipe, la terrasse. Ce sont ces blocs-là qu'il faut remplacer en priorité, dans `index.html` (section « Notre concept »), `histoire.html` (loge + équipe) et `galerie.html`. Le principe est le même que ci-dessous :
+Remplacez le chemin dans `src="images/..."` par votre nouveau fichier, déposé dans le dossier `images/`. Pour un emplacement encore en attente (rectangle bleu/vert « Photo à venir »), remplacez le bloc `<div class="ph">...</div>` par :
 ```html
-<div class="ph" style="--ar:4/3;"><span class="ph-label">Huîtres</span></div>
+<div class="ph" style="overflow:hidden;"><img src="images/votre-photo.jpg" alt="Description"></div>
 ```
-Pour remplacer par une vraie photo, remplacez ce bloc par :
-```html
-<img src="images/nom-du-fichier.jpg" alt="Description de la photo">
-```
-Placez vos fichiers dans un dossier `images/` à créer à la racine du site. Conseil : des photos d'au moins 1200 px de large, au format `.jpg` compressé (~200–400 Ko chacune) pour un chargement rapide.
 
 ### Le logo
-Vous avez déjà un logo : remplacez le texte « La Maison de l'Écaille » dans le bloc `.logo` (en haut de chaque page) par une image, par exemple :
-```html
-<a class="logo" href="index.html"><img src="images/logo.svg" alt="La Maison de l'Écaille" style="height:40px;"></a>
-```
+Le fichier `images/logo.png` est déjà détouré (fond transparent). Pour le changer, remplacez simplement ce fichier par une nouvelle version au même nom, idéalement aussi en PNG avec fond transparent.
+
+### Horaires, adresse, téléphone
+Ces informations apparaissent à plusieurs endroits (bandeau infos de chaque page + pied de page + chatbot). Le plus simple : faites une recherche globale du texte à changer (ex. « 05 61 00 00 00 ») dans tous les fichiers `.html` et `js/chatbot.js`, et remplacez-le partout.
+
+### Le chatbot Coquillette
+Ouvrez `js/chatbot.js` : la liste `FAQ` en haut du fichier contient les questions/réponses. Modifiable directement, sans toucher au reste du code.
 
 ## Formulaire de contact
 
-Le formulaire (`contact.html`) est prêt mais doit être connecté à un service d'envoi, car un site statique ne peut pas envoyer d'e-mails par lui-même. Solution la plus simple, gratuite jusqu'à 50 messages/mois :
-
+Comme pour la version précédente, un site statique ne peut pas envoyer d'e-mails seul. Solution simple et gratuite :
 1. Créez un compte sur [formspree.io](https://formspree.io)
-2. Créez un formulaire, vous obtenez une adresse du type `https://formspree.io/f/abcd1234`
-3. Dans `contact.html`, remplacez :
-   ```html
-   <form id="contact-form" class="form-grid" action="https://formspree.io/f/VOTRE_ID" method="POST">
-   ```
-   par votre propre adresse.
+2. Récupérez votre adresse (`https://formspree.io/f/abcd1234`)
+3. Dans `contact.html`, remplacez `action="https://formspree.io/f/VOTRE_ID"` par votre adresse.
 
-Tant que ce n'est pas fait, le formulaire affiche un message clair au lieu d'échouer silencieusement.
+## Statistiques (visiteurs, clics)
 
-## Statistiques (visiteurs, pages vues, clics)
+Le suivi des clics (téléphone, Instagram, itinéraire, formulaire) est déjà posé via l'attribut `data-track`. Il suffit de brancher Google Analytics 4 ou Plausible :
 
-Le site est déjà équipé pour suivre : le nombre de visiteurs, les pages les plus consultées, et les clics sur le téléphone, l'Instagram, l'itinéraire et l'envoi du formulaire (attribut `data-track` déjà posé sur ces éléments). Il ne manque qu'un outil de mesure — deux options :
-
-**Option simple et gratuite : Google Analytics 4**
-1. Créez une propriété sur [analytics.google.com](https://analytics.google.com), récupérez votre identifiant `G-XXXXXXX`.
-2. Collez ce code juste avant `</head>` sur les 5 pages :
-   ```html
-   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
-   <script>
-     window.dataLayer = window.dataLayer || [];
-     function gtag(){dataLayer.push(arguments);}
-     gtag('js', new Date());
-     gtag('config', 'G-XXXXXXX');
-   </script>
-   ```
-3. Les clics suivis remonteront automatiquement dans Analytics sous les noms `clic_telephone`, `clic_instagram`, `clic_itineraire`, `envoi_formulaire`.
-
-**Option respectueuse de la vie privée (sans bandeau cookies) : Plausible**
-Payant (~9€/mois), mais plus simple à lire et conforme RGPD sans configuration. Suivez leur script d'installation sur [plausible.io](https://plausible.io) — il suffit de coller leur balise `<script>` dans `<head>`, le suivi des clics fonctionne alors automatiquement grâce à `js/main.js`.
+```html
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXX');
+</script>
+```
+À coller avant `</head>` sur les 9 pages.
 
 ## Hébergement
 
-Le site est 100 % statique : il peut être déposé tel quel sur n'importe quel hébergement (Netlify, Vercel, OVH, o2switch…) ou sur un nom de domaine dédié. Aucune base de données ni serveur applicatif n'est nécessaire.
-
-## Aller plus loin
-
-Si la mise à jour de la carte ou des photos devient fréquente et que l'édition de fichiers HTML est contraignante, il est possible d'ajouter par la suite une interface d'administration simple (ex. Netlify CMS) pour éditer ces contenus depuis un formulaire web, sans toucher au code.
+Le site est 100 % statique : GitHub Pages, Netlify, ou tout hébergement classique conviennent. Voir vos échanges précédents pour la mise en ligne via GitHub Pages.
