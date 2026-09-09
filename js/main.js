@@ -27,8 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
   /* ---------- Halo / ombre de la nav au scroll ---------- */
   var header = document.querySelector('.site-header');
   if (header) {
+    var isScrolled = false;
     var onScroll = function () {
-      header.classList.toggle('is-scrolled', window.scrollY > 12);
+      var y = window.scrollY;
+      if (!isScrolled && y > 60) {
+        isScrolled = true;
+        header.classList.add('is-scrolled');
+      } else if (isScrolled && y < 24) {
+        isScrolled = false;
+        header.classList.remove('is-scrolled');
+      }
     };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
