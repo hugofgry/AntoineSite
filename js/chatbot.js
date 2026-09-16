@@ -56,7 +56,7 @@
       id: 'carte',
       chip: 'La carte',
       keywords: ['carte', 'menu', 'prix', 'tarif', 'huitre', 'moule', 'entree', 'manger'],
-      answer: 'Notre carte propose des huîtres du bassin d\'Arcachon, des entrées froides, des moules et plats chauds, ainsi que boissons et vins.',
+      answer: 'Huîtres Ostra, Belle de Quiberon et Gillardeau, crus de l\'Écaille, moules d\'Espagne et fraîcheurs — toute la carte est en ligne.',
       linkText: 'Voir la carte',
       linkHref: 'carte.html'
     },
@@ -64,7 +64,7 @@
       id: 'plateaux',
       chip: 'Nos plateaux',
       keywords: ['plateau', 'prestige', 'degustation'],
-      answer: 'Petit plateau, grand plateau, plateau prestige ou plateau dégustation : à composer selon vos envies et les arrivages.',
+      answer: 'L\'Essentiel (36 €), Le Grand Large (70 €) ou Le Festin (95 €) — trois plateaux d\'huîtres, crevettes et bulots, à partager.',
       linkText: 'Voir les plateaux',
       linkHref: 'plateaux.html'
     },
